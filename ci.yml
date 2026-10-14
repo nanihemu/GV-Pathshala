@@ -1,0 +1,31 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - name: Generate Prisma client
+        run: npm -w server run db:generate
+        env:
+          DATABASE_URL: postgresql://x:x@localhost:5432/x
+      - name: Type check server and client
+        run: npm run typecheck
+        env:
+          DATABASE_URL: postgresql://x:x@localhost:5432/x
+      - name: Unit tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://x:x@localhost:5432/x
+          JWT_SECRET: test-secret-test-secret
+          JWT_REFRESH_SECRET: test-refresh-test-refresh
+      - name: Build client
+        run: npm -w client run build
