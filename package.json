@@ -1,6 +1,16 @@
 {
-  "name": "gv-pathshala-e2e",
+  "name": "gv-pathshala",
+  "version": "1.0.0",
   "private": true,
-  "scripts": { "test": "playwright test" },
-  "devDependencies": { "@playwright/test": "^1.47.2" }
+  "description": "GV Pathshala: a learning management system with an AI tutor, quiz and feedback generator, learning analyzer and course recommendations",
+  "workspaces": ["server", "client"],
+  "scripts": {
+    "db:up": "docker compose up -d db",
+    "db:setup": "npm -w server run db:push && npm -w server run db:seed",
+    "dev:server": "npm -w server run dev",
+    "dev:client": "npm -w client run dev",
+    "test": "npm -w server run test",
+    "typecheck": "npm -w server run typecheck && npm -w client run typecheck",
+    "build": "npm -w server run build && npm -w client run build"
+  }
 }
