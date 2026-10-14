@@ -1,0 +1,18 @@
+# DOMAIN is set in .env.
+#   - a real domain (for example learn.example.com): Caddy gets a free HTTPS certificate automatically
+#   - empty: plain HTTP on port 80, good for a first test with the server's IP address
+{$DOMAIN::80} {
+    encode gzip
+
+    # API requests go to the Node server
+    handle /api/* {
+        reverse_proxy server:4000
+    }
+
+    # everything else is the React app; unknown paths fall back to index.html so page refreshes work
+    handle {
+        root * /srv
+        try_files {path} /index.html
+        file_server
+    }
+}

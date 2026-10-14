@@ -22,6 +22,9 @@ import { aiRouter } from './modules/ai/ai.routes';
 
 export const app = express();
 
+// The API sits behind the Caddy container, so trust its X-Forwarded-For header (needed for correct rate limiting)
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
