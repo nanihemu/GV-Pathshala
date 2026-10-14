@@ -10,3 +10,6 @@ RUN npx vite build
 FROM caddy:2-alpine
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/dist /srv
+
+# If DOMAIN is empty or missing, serve plain HTTP on port 80
+CMD ["sh", "-c", "export DOMAIN=\"${DOMAIN:-:80}\"; exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]

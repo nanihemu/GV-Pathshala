@@ -52,7 +52,7 @@ services:
     depends_on:
       - server
     environment:
-      DOMAIN: ${DOMAIN:-}
+      DOMAIN: ${DOMAIN:-:80}
     ports:
       - "80:80"
       - "443:443"
